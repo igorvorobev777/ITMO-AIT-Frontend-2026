@@ -1,0 +1,194 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@test.com",
+      "password": "admin123"
+    },
+    {
+      "id": 2,
+      "email": "member@test.com",
+      "password": "user123"
+    },
+    {
+      "name": "ew",
+      "surname": "fwe",
+      "email": "bb@mail.ru",
+      "password": "123456",
+      "id": 3
+    },
+    {
+      "name": "ew",
+      "surname": "fwe",
+      "email": "g@mail",
+      "password": "123456",
+      "id": 4
+    },
+    {
+      "name": "fwe3",
+      "surname": "f43",
+      "email": "t@mal",
+      "password": "123456",
+      "id": 5
+    },
+    {
+      "name": "fwe3",
+      "surname": "f43",
+      "email": "te@mal",
+      "password": "123456",
+      "id": 6
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "CRM-система",
+      "status": "В процессе",
+      "priority": "Высокий",
+      "team": [
+        "Алексей",
+        "Мария"
+      ],
+      "userRole": "Администратор",
+      "description": "Разработка CRM-системы для управления клиентами и продажами.",
+      "deadline": "20.05.2026",
+      "teamDetails": [
+        {
+          "name": "Алексей",
+          "role": "Администратор"
+        },
+        {
+          "name": "Мария",
+          "role": "Участник"
+        },
+        {
+          "name": "Дмитрий",
+          "role": "Наблюдатель"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Сайт магазина",
+      "status": "Новый",
+      "priority": "Средний",
+      "team": [
+        "Мария",
+        "Дмитрий"
+      ],
+      "userRole": null,
+      "description": "Интернет-магазин электроники с каталогом и корзиной.",
+      "deadline": "15.06.2026",
+      "teamDetails": [
+        {
+          "name": "Мария",
+          "role": "Администратор"
+        },
+        {
+          "name": "Дмитрий",
+          "role": "Участник"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Мобильное приложение",
+      "status": "Завершён",
+      "priority": "Низкий",
+      "team": [
+        "Дмитрий"
+      ],
+      "userRole": "Наблюдатель",
+      "description": "Мобильное приложение для трекинга задач.",
+      "deadline": "01.07.2026",
+      "teamDetails": [
+        {
+          "name": "Дмитрий",
+          "role": "Администратор"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Интеграция API",
+      "status": "В процессе",
+      "priority": "Высокий",
+      "team": [
+        "Алексей"
+      ],
+      "userRole": "Участник",
+      "description": "Интеграция внешних API для автоматизации отчетов.",
+      "deadline": "10.06.2026",
+      "teamDetails": [
+        {
+          "name": "Алексей",
+          "role": "Администратор"
+        },
+        {
+          "name": "Мария",
+          "role": "Участник"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "id": 1,
+      "projectId": 1,
+      "name": "ТЗ_v2.pdf",
+      "size": "2.4 MB",
+      "date": "15.04.2026"
+    },
+    {
+      "id": 2,
+      "projectId": 1,
+      "name": "Макеты_UI.fig",
+      "size": "18 MB",
+      "date": "12.04.2026"
+    },
+    {
+      "id": 3,
+      "projectId": 1,
+      "name": "Смета_бюджет.xlsx",
+      "size": "0.5 MB",
+      "date": "10.04.2026"
+    },
+    {
+      "projectId": 3,
+      "name": "nkpcwe",
+      "size": "1.0 MB",
+      "date": "22.05.2026",
+      "id": 4
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "projectId": 1,
+      "author": "Алексей",
+      "text": "Начал работу над API, жду макеты.",
+      "time": "10:30"
+    },
+    {
+      "id": 2,
+      "projectId": 1,
+      "author": "Мария",
+      "text": "Макеты уже в Figma, ссылка в описании проекта.",
+      "time": "11:15"
+    },
+    {
+      "id": 3,
+      "projectId": 1,
+      "author": "Дмитрий",
+      "text": "Когда будет готов бэкенд для тестов?",
+      "time": "Вчера"
+    },
+    {
+      "projectId": 4,
+      "author": "fwe3",
+      "text": "тлжж",
+      "time": "19:49",
+      "id": 4
+    }
+  ]
+}

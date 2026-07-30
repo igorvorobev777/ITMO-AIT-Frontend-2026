@@ -1,4 +1,4 @@
-import { getJSON, getCurrentUser, clearCurrentUser, API_BASE_URL } from './api.js';
+import { getJSON, postJSON, getCurrentUser, clearCurrentUser, API_BASE_URL } from './api.js';
 
 const user = getCurrentUser();
 if (!user) {
@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupProjectActions();
 });
 
+function getUserRoleInProject(project, userEmail) {
+    if (!project.teamDetails || !userEmail) return null;
+    const member = project.teamDetails.find(m => m.email === userEmail);
+    return member ? member.role : null;
+}
+
 async function loadProjects() {
     try {
         projectsData = await getJSON('/projects');
@@ -27,13 +33,13 @@ async function loadProjects() {
 
 function nameFilter(projects) {
     const assigneeSelect = document.getElementById('filterAssignee');
+    if (!assigneeSelect) return;
 
     const allNames = projects.flatMap(p => 
-        p.teamDetails.map(m => m.name).filter(n => n && n.trim())
+        p.teamDetails?.map(m => m.name).filter(n => n && n.trim()) || []
     );
     
     const uniqueNames = [...new Set(allNames)].sort((a, b) => a.localeCompare(b));
-
     const currentValue = assigneeSelect.value;
 
     assigneeSelect.innerHTML = '<option value="">Все</option>';
@@ -92,6 +98,7 @@ function setupFilters() {
 
 function renderProjects(data) {
     const container = document.getElementById('projects-container');
+    if (!container) return;
 
     if (data.length === 0) {
         container.innerHTML = '<p class="text-muted w-100 text-center mt-5">Проекты не найдены</p>';
@@ -99,9 +106,11 @@ function renderProjects(data) {
     }
 
     container.innerHTML = data.map(p => {
-        const isJoined = p.userRole !== null && p.userRole !== undefined;
+        const userRole = getUserRoleInProject(p, user.email);
+        const isJoined = userRole !== null;
+        
         const badge = isJoined 
-            ? `<span class="badge">${p.userRole}</span>`
+            ? `<span class="badge">${userRole}</span>`
             : `<span class="badge badge-secondary">Не в команде</span>`;
 
         const btnClass = 'btn-outline-black';
@@ -130,6 +139,7 @@ function renderProjects(data) {
 
 function setupProjectActions() {
     const container = document.getElementById('projects-container');
+    if (!container) return;
 
     container.addEventListener('click', (e) => {
         const btn = e.target.closest('.project-action-btn');
@@ -150,18 +160,22 @@ async function handleJoinProject(id) {
     const project = projectsData.find(p => p.id == id);
     if (!project) return;
 
-    project.userRole = 'observer';
-    
-    const isAlreadyMember = project.teamDetails && 
-        project.teamDetails.some(m => m.name === user.name);
-    
-    if (!isAlreadyMember) {
-        if (!project.teamDetails) project.teamDetails = [];
-        project.teamDetails.push({ name: user.name, role: 'Наблюдатель' });
-        
-        if (!project.team.includes(user.name)) {
-            project.team.push(user.name);
-        }
+    const isAlreadyMember = project.teamDetails?.some(m => m.email === user.email);
+    if (isAlreadyMember) return;
+
+    const fullName = `${user.name} ${user.surname}`.trim();
+
+    if (!project.teamDetails) project.teamDetails = [];
+    project.teamDetails.push({
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        role: 'Наблюдатель'
+    });
+
+    if (!project.team) project.team = [];
+    if (!project.team.includes(fullName)) {
+        project.team.push(fullName);
     }
 
     try {
@@ -170,11 +184,58 @@ async function handleJoinProject(id) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(project)
         });
-        
         await loadProjects();
     } catch (err) {
         console.error('Ошибка при вступлении:', err);
     }
+}
+
+const createBtn = document.getElementById('btnCreateProject');
+if (createBtn) {
+    createBtn.addEventListener('click', async () => {
+        const name = document.getElementById('newProjName').value.trim();
+        const desc = document.getElementById('newProjDesc').value.trim();
+        const status = document.getElementById('newProjStatus').value;
+        const priority = document.getElementById('newProjPriority').value;
+        const deadline = document.getElementById('newProjDeadline').value;
+
+        if (!name) {
+            alert('Введите название проекта');
+            return;
+        }
+
+        const fullName = `${user.name} ${user.surname}`.trim();
+
+        const newProject = {
+            name,
+            description: desc || 'Без описания',
+            status,
+            priority,
+            deadline: deadline ? new Date(deadline).toLocaleDateString('ru-RU') : '--.--.----',
+            team: [fullName],
+            teamDetails: [{
+                name: user.name,
+                surname: user.surname,
+                email: user.email,
+                role: 'Администратор'
+            }]
+        };
+
+        try {
+            await postJSON('/projects', newProject);
+
+            const modalEl = document.getElementById('createProjectModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+
+            document.getElementById('createForm').reset();
+            await loadProjects();
+            alert('Проект успешно создан!');
+        } catch (err) {
+            console.error('Ошибка создания проекта:', err);
+            alert('Не удалось создать проект: ' + err.message);
+        }
+    });
 }
 
 function setupLogout() {

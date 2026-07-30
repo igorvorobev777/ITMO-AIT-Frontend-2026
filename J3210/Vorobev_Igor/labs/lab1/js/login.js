@@ -23,11 +23,11 @@ btnLogin.addEventListener('click', () => {
         return;
     }
 
-    const users = JSON.parse(localStorage.getItem('taskflow_users') || '[]');
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
     const user = users.find(u => u.email === email && u.password === password);
 
     if (user) {
-        localStorage.setItem('taskflow_user', JSON.stringify({ name: user.name, email }));
+        localStorage.setItem('user', JSON.stringify({ name: user.name, email }));
         successText.textContent = `Добро пожаловать, ${user.name}!`;
         successToast.show();
         setTimeout(() => window.location.href = 'personal_account.html', 1000);

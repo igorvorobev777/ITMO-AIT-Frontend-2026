@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupTabs();
     setupActions();
     setupLogout();
+    setupAdminPanel();
 });
 
 async function loadProject(id) {
@@ -41,17 +42,140 @@ async function loadProject(id) {
         projDeadline.textContent = currentProject.deadline || '--.--.----';
         projStatus.textContent = currentProject.status;
         
-        const team = currentProject.teamDetails || [];
-        teamList.innerHTML = team.map(m => `
-            <div class="team-member">
-                <span class="fw-bold">${m.name}</span>
-                <span class="badge">${m.role}</span>
-            </div>
-        `).join('');
+        renderTeam();
     } catch (err) {
         console.error('Ошибка загрузки проекта', err);
     }
 }
+
+function renderTeam() {
+    const team = currentProject.teamDetails || [];
+    const isAdmin = currentProject.userRole === 'Администратор';
+
+    teamList.innerHTML = team.map(m => {
+        const key = m.email || `${m.name} ${m.surname}`;
+        
+        return `
+        <div class="team-member">
+            <div>
+                <span class="fw-bold">${m.name} ${m.surname || ''}</span>
+                ${m.email ? `<br><small class="text-muted" style="font-size:11px">${m.email}</small>` : ''}
+                <span class="badge ms-2">${m.role}</span>
+            </div>
+            ${isAdmin && m.role !== 'Администратор' ? `
+            <div class="dropdown">
+                <button class="btn btn-sm btn-link p-0 text-dark" type="button" data-bs-toggle="dropdown">⋮</button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#" onclick="window.changeRole('${currentProject.id}', '${key}', 'Участник')">Сделать Участником</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="window.changeRole('${currentProject.id}', '${key}', 'Наблюдатель')">Сделать Наблюдателем</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="#" onclick="window.removeMember('${currentProject.id}', '${key}')">Удалить</a></li>
+                </ul>
+            </div>
+            ` : ''}
+        </div>`;
+    }).join('');
+}
+
+function setupAdminPanel() {
+    const adminPanel = document.getElementById('adminPanel');
+    const btnInvite = document.getElementById('btnInvite');
+    
+    if (!adminPanel) return;
+    
+    const isAdmin = currentProject.userRole === 'Администратор';
+    adminPanel.style.display = isAdmin ? 'block' : 'none';
+    
+    if (isAdmin && btnInvite) {
+        btnInvite.onclick = () => addMember(currentProject.id);
+    }
+}
+
+async function addMember(projectId) {
+    const emailInput = document.getElementById('inviteEmail');
+    const targetEmail = emailInput?.value.trim();
+    
+    if (!targetEmail) return alert('Введите Email');
+    
+    const users = await getJSON('/users', { email: targetEmail });
+    if (users.length === 0) return alert('Пользователь с таким Email не найден в системе');
+    
+    const targetUser = users[0];
+    
+    const project = await getJSON(`/projects/${projectId}`);
+    
+    if (project.teamDetails?.some(m => m.email === targetUser.email)) {
+        return alert('Этот пользователь уже в команде');
+    }
+    
+    if (!project.teamDetails) project.teamDetails = [];
+    project.teamDetails.push({
+        name: targetUser.name,
+        surname: targetUser.surname,
+        email: targetUser.email,
+        role: 'Участник'
+    });
+    
+    const fullName = `${targetUser.name} ${targetUser.surname}`;
+    if (!project.team) project.team = [];
+    if (!project.team.includes(fullName)) project.team.push(fullName);
+    
+    await fetch(`${API_BASE_URL}/projects/${projectId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(project)
+    });
+    
+    emailInput.value = '';
+    location.reload();
+}
+
+window.changeRole = async function(projectId, memberKey, newRole) {
+    const project = await getJSON(`/projects/${projectId}`);
+    
+    const member = project.teamDetails?.find(m => 
+        (m.email && m.email === memberKey) || 
+        (!m.email && `${m.name} ${m.surname}` === memberKey)
+    );
+    
+    if (member) {
+        member.role = newRole;
+        await fetch(`${API_BASE_URL}/projects/${projectId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(project)
+        });
+        location.reload();
+    }
+};
+
+window.removeMember = async function(projectId, memberKey) {
+    if (!confirm('Удалить участника из проекта?')) return;
+    
+    const project = await getJSON(`/projects/${projectId}`);
+    
+    const member = project.teamDetails?.find(m => 
+        (m.email && m.email === memberKey) || 
+        (!m.email && `${m.name} ${m.surname}` === memberKey)
+    );
+    
+    if (member) {
+        project.teamDetails = project.teamDetails.filter(m => 
+            (m.email && m.email !== memberKey) || 
+            (!m.email && `${m.name} ${m.surname}` !== memberKey)
+        );
+        
+        const fullName = `${member.name} ${member.surname}`;
+        project.team = (project.team || []).filter(n => n !== fullName);
+        
+        await fetch(`${API_BASE_URL}/projects/${projectId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(project)
+        });
+        location.reload();
+    }
+};
 
 function renderFiles() {
     if (files.length === 0) {
@@ -67,7 +191,6 @@ function renderFiles() {
                     <small class="text-muted">${f.size} • ${f.date}</small>
                 </div>
             </div>
-            <!-- Важно: window.deleteFile должна быть объявлена ниже -->
             <button class="btn btn-sm btn-outline-black" onclick="window.deleteFile(${f.id})">Удалить</button>
         </div>
     `).join('');

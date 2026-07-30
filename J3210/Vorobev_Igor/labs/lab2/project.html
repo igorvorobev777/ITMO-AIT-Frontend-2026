@@ -93,6 +93,14 @@
             gap: 12px;
             margin-top: 24px;
         }
+        
+        .admin-panel {
+            border: 2px dashed #000;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 12px;
+            background: #f8f9fa;
+        }
     </style>
 </head>
 <body>
@@ -148,7 +156,15 @@
 
             <div class="col-lg-4">
                 <h5 class="fw-bold mb-3">Команда</h5>
-                <div id="teamList">
+                <div id="teamList"></div>
+                
+                <div id="adminPanel" class="admin-panel" style="display: none;">
+                    <h6 class="fw-bold small mb-2">➕ Добавить участника</h6>
+                    <div class="input-group input-group-sm">
+                        <input type="email" class="form-control" id="inviteEmail" placeholder="user@example.com">
+                        <button class="btn btn-outline-black" id="btnInvite">Добавить</button>
+                    </div>
+                    <small class="text-muted d-block mt-1">Введите Email пользователя</small>
                 </div>
             </div>
         </div>

@@ -23,11 +23,11 @@
         <div class="bg-light mb-4">
             <div class="row g-2 align-items-end">
                 <div class="col-md-5">
-                    <label class="form-label small">Поиск</label>
+                    <label for="searchInput" class="form-label small">Поиск</label>
                     <input type="text" class="form-control" id="searchInput" placeholder="Название проекта...">
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label small">Статус</label>
+                    <label for="filterStatus" class="form-label small">Статус</label>
                     <select class="form-select" id="filterStatus">
                         <option value="">Все</option>
                         <option value="Новый">Новый</option>
@@ -36,7 +36,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label small">Приоритет</label>
+                    <label for="filterPriority" class="form-label small">Приоритет</label>
                     <select class="form-select" id="filterPriority">
                         <option value="">Все</option>
                         <option value="Высокий">Высокий</option>
@@ -45,7 +45,7 @@
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small">Исполнитель</label>
+                    <label for="filterAssignee" class="form-label small">Исполнитель</label>
                     <select class="form-select" id="filterAssignee">
                         <option value="">Все</option>
                     </select>
@@ -64,28 +64,28 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Новый проект</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
-                <div class="modal-body">
-                    <form id="createForm">
-                        <div class="mb-3">
-                            <label class="form-label">Название</label>
-                            <input type="text" class="form-control" id="newProjName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Описание</label>
-                            <textarea class="form-control" id="newProjDesc" rows="3"></textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Статус</label>
-                                <select class="form-select" id="newProjStatus">
-                                    <option value="Новый">Новый</option>
-                                    <option value="В процессе">В процессе</option>
-                                </select>
+                    <div class="modal-body">
+                        <form id="createForm">
+                            <div class="mb-3">
+                                <label for="newProjName" class="form-label">Название</label>
+                                <input type="text" class="form-control" id="newProjName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newProjDesc" class="form-label">Описание</label>
+                                <textarea class="form-control" id="newProjDesc" rows="3"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="newProjStatus" class="form-label">Статус</label>
+                                    <select class="form-select" id="newProjStatus">
+                                        <option value="Новый">Новый</option>
+                                        <option value="В процессе">В процессе</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Приоритет</label>
+                                    <label for="newProjPriority" class="form-label">Приоритет</label>
                                     <select class="form-select" id="newProjPriority">
                                         <option value="Низкий">Низкий</option>
                                         <option value="Средний">Средний</option>
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Дедлайн</label>
+                                <label for="newProjDeadline" class="form-label">Дедлайн</label>
                                 <input type="date" class="form-control" id="newProjDeadline">
                             </div>
                         </form>

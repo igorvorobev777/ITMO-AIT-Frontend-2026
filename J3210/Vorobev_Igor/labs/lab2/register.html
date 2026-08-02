@@ -46,64 +46,65 @@
         }
     </style>
 </head>
-<body class="auth-wrapper">
-
-    <div class="card auth-card">
-        <div class="card-body p-4">
-            <h2 class="auth-title">Регистрация</h2>
-            
-            <form id="registerForm">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingName" placeholder="Имя">
-                    <label>Имя</label>
-                </div>
+<body>
+    <main class="auth-wrapper">
+        <div class="card auth-card">
+            <div class="card-body p-4">
+                <h2 class="auth-title">Регистрация</h2>
                 
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="floatingSurname" placeholder="Фамилия">
-                    <label>Фамилия</label>
+                <form id="registerForm">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingName" placeholder="Имя">
+                        <label>Имя</label>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingSurname" placeholder="Фамилия">
+                        <label>Фамилия</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="floatingEmail" placeholder="Email">
+                        <label>Email</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="Пароль">
+                        <label>Пароль</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="floatingPasswordRepeat" placeholder="Повторите пароль">
+                        <label>Повторите пароль</label>
+                    </div>
+
+                    <button type="button" id="btnRegister" class="btn btn-outline-black w-100 py-2 fw-bold">
+                        Зарегистрироваться
+                    </button>
+                </form>
+
+                <div class="auth-links">
+                    <a href="index.html">← Назад</a>
+                    <span class="mx-2">|</span>
+                    <a href="login.html">Уже есть аккаунт?</a>
                 </div>
-
-                <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="floatingEmail" placeholder="Email">
-                    <label>Email</label>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Пароль">
-                    <label>Пароль</label>
-                </div>
-
-                <div class="form-floating mb-4">
-                    <input type="password" class="form-control" id="floatingPasswordRepeat" placeholder="Повторите пароль">
-                    <label>Повторите пароль</label>
-                </div>
-
-                <button type="button" id="btnRegister" class="btn btn-outline-black w-100 py-2 fw-bold">
-                    Зарегистрироваться
-                </button>
-            </form>
-
-            <div class="auth-links">
-                <a href="index.html">← Назад</a>
-                <span class="mx-2">|</span>
-                <a href="login.html">Уже есть аккаунт?</a>
             </div>
         </div>
-    </div>
-    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
-        <div id="errorToast" class="toast border-2 border-black" role="alert">
-            <div class="d-flex align-items-center">
-                <div id="errorToastText" class="toast-body fw-bold">Ошибка</div>
-                <button type="button" class="btn-close me-2" data-bs-dismiss="toast"></button>
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+            <div id="errorToast" class="toast border-2 border-black" role="alert">
+                <div class="d-flex align-items-center">
+                    <div id="errorToastText" class="toast-body fw-bold">Ошибка</div>
+                    <button type="button" class="btn-close me-2" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+            <div id="successToast" class="toast border-2 border-success" role="alert">
+                <div class="d-flex align-items-center">
+                    <div id="successToastText" class="toast-body fw-bold text-success">Успешно</div>
+                    <button type="button" class="btn-close me-2" data-bs-dismiss="toast"></button>
+                </div>
             </div>
         </div>
-        <div id="successToast" class="toast border-2 border-success" role="alert">
-            <div class="d-flex align-items-center">
-                <div id="successToastText" class="toast-body fw-bold text-success">Успешно</div>
-                <button type="button" class="btn-close me-2" data-bs-dismiss="toast"></button>
-            </div>
-        </div>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="js/register.js"></script>

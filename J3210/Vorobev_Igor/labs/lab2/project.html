@@ -113,8 +113,12 @@
         
         <div class="d-flex align-items-center gap-2 flex-shrink-0">
             <button onclick="changeTheme()" class="theme-toggle" aria-label="Переключить тему">
-                <span class="sun">☀️</span>
-                <span class="moon">🌙</span>
+                <span class="sun">
+                    <svg width="20" height="20"><use href="img/sprite.svg#sun"></use></svg>
+                </span>
+                <span class="moon">
+                    <svg width="20" height="20"><use href="img/sprite.svg#moon"></use></svg>
+                </span>
             </button>
             <button id="btnLogout" class="btn btn-sm btn-outline-black">Выйти</button>
         </div>

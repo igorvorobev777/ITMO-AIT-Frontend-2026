@@ -14,8 +14,12 @@
                 <div class="d-flex align-items-center gap-2">
 
                     <button onclick="changeTheme()" class="theme-toggle" aria-label="Переключить тему">
-                        <span class="sun">☀️</span>
-                        <span class="moon">🌙</span>
+                        <span class="sun">
+                            <svg width="20" height="20"><use href="img/sprite.svg#sun"></use></svg>
+                        </span>
+                        <span class="moon">
+                            <svg width="20" height="20"><use href="img/sprite.svg#moon"></use></svg>
+                        </span>
                     </button>
 
                     <span class="small" id="userName">Пользователь</span>
@@ -29,7 +33,9 @@
         <div class="bg-light mb-4">
             <div class="row g-2 align-items-end">
                 <div class="col-md-5">
-                    <label for="searchInput" class="form-label small">Поиск</label>
+                    <label for="searchInput" class="form-label small">
+                        Поиск <svg width="20" height="20"><use href="img/sprite.svg#search"></use></svg>
+                    </label>
                     <input type="text" class="form-control" id="searchInput" placeholder="Название проекта...">
                 </div>
                 <div class="col-md-2">

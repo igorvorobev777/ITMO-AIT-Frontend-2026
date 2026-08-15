@@ -83,7 +83,14 @@ function setupAdminPanel() {
     
     if (!adminPanel) return;
     
-    const isAdmin = currentProject.userRole === 'Администратор';
+    const currentEmail = user.email; 
+    
+    const myProfile = currentProject.teamDetails?.find(m => m.email === currentEmail);
+    
+    const myRole = myProfile ? myProfile.role : '';
+    
+    const isAdmin = myRole === 'Администратор';
+    
     adminPanel.style.display = isAdmin ? 'block' : 'none';
     
     if (isAdmin && btnInvite) {

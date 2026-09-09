@@ -216,7 +216,8 @@
       "priority": "Низкий",
       "deadline": "--.--.----",
       "team": [
-        "egor hit"
+        "egor hit",
+        "fwe3 f43"
       ],
       "teamDetails": [
         {
@@ -224,6 +225,12 @@
           "surname": "hit",
           "email": "teb@mal",
           "role": "Администратор"
+        },
+        {
+          "name": "fwe3",
+          "surname": "f43",
+          "email": "te@mal",
+          "role": "Наблюдатель"
         }
       ],
       "id": 6
